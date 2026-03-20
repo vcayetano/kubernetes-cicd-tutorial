@@ -16,6 +16,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Build and push Docker image
@@ -26,6 +27,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
+
       - name: Update GitOps repository
         shell: bash
         env:
@@ -39,7 +41,7 @@ jobs:
           rm -rf gitops
           
           # Clone repository using HTTPS URL without token
-          git clone https://github.com/rslim087a/grade-api-gitops.git gitops
+          git clone https://github.com/vcayetano/grade-api-gitops.git gitops
           cd gitops
           
           if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -55,4 +57,4 @@ jobs:
           git commit -m "Update image to ${{ github.sha }}"
           
           # Push
-          git push -f https://${GIT_TOKEN}@github.com/rslim087a/grade-api-gitops.git main
+          git push -f https://${GIT_TOKEN}@github.com/vcayetano/grade-api-gitops.git main
